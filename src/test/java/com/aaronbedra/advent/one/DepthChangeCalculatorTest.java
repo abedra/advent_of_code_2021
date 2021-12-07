@@ -32,12 +32,28 @@ public class DepthChangeCalculatorTest {
             tuple(269, increase()),
             tuple(260, decrease()),
             tuple(263, increase()));
+    private static final StrictQueue<Tuple2<Integer, Measurement>> EXPECTED_SLIDING_WINDOW_OUTPUT = strictQueue(
+            tuple(607, notApplicable()),
+            tuple(618, increase()),
+            tuple(618, noChange()),
+            tuple(617, decrease()),
+            tuple(647, increase()),
+            tuple(716, increase()),
+            tuple(769, increase()),
+            tuple(792, increase()));
 
     @Test
     public void noPreviousMeasurement() {
         assertEquals(
                 notApplicable(),
                 takeMeasurement(nothing(), 1));
+    }
+
+    @Test
+    public void unchanged() {
+        assertEquals(
+                noChange(),
+                takeMeasurement(just(1), 1));
     }
 
     @Test
@@ -60,8 +76,9 @@ public class DepthChangeCalculatorTest {
     }
 
     @Test
-    public void sample() {
+    public void samples() {
         assertEquals(7, calculate(EXPECTED_SAMPLE_OUTPUT));
+        assertEquals(5, calculate(EXPECTED_SLIDING_WINDOW_OUTPUT));
     }
 
     @Test
@@ -87,8 +104,13 @@ public class DepthChangeCalculatorTest {
     @Test
     public void processSlidingWindows() {
         assertEquals(
-                strictQueue(607, 618, 618, 617, 647, 716, 769, 792),
+                EXPECTED_SLIDING_WINDOW_OUTPUT.reverse(),
                 processSlidingWindow(partitionInputs(SAMPLE)));
+    }
+
+    @Test
+    public void partTwoFullInput() throws URISyntaxException, IOException {
+        assertEquals(1486, calculate(processSlidingWindow(partitionInputs(readInputs()))));
     }
 
     private StrictQueue<Integer> readInputs() throws URISyntaxException, IOException {
