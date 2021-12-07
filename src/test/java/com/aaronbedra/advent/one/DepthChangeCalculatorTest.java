@@ -69,6 +69,28 @@ public class DepthChangeCalculatorTest {
         assertEquals(1446, calculate(process(readInputs())));
     }
 
+    @Test
+    public void partition() {
+        assertEquals(
+                strictQueue(
+                        just(tuple(199, 200, 208)),
+                        just(tuple(200, 208, 210)),
+                        just(tuple(208, 210, 200)),
+                        just(tuple(210, 200, 207)),
+                        just(tuple(200, 207, 240)),
+                        just(tuple(207, 240, 269)),
+                        just(tuple(240, 269, 260)),
+                        just(tuple(269, 260, 263))),
+                partitionInputs(SAMPLE));
+    }
+
+    @Test
+    public void processSlidingWindows() {
+        assertEquals(
+                strictQueue(607, 618, 618, 617, 647, 716, 769, 792),
+                processSlidingWindow(partitionInputs(SAMPLE)));
+    }
+
     private StrictQueue<Integer> readInputs() throws URISyntaxException, IOException {
         return strictQueue(lines(of(requireNonNull(getClass().getClassLoader().getResource("one.input")).toURI()))
                 .map(Integer::parseInt)
