@@ -9,11 +9,11 @@ import java.net.URISyntaxException;
 
 import static com.aaronbedra.advent.one.DepthChangeCalculator.*;
 import static com.aaronbedra.advent.one.Measurement.*;
+import static com.aaronbedra.advent.testsupport.ReadTestInput.readIntegerInputs;
 import static com.jnape.palatable.lambda.adt.Maybe.just;
 import static com.jnape.palatable.lambda.adt.Maybe.nothing;
 import static com.jnape.palatable.lambda.adt.hlist.HList.tuple;
 import static com.jnape.palatable.shoki.impl.StrictQueue.strictQueue;
-import static com.jnape.palatable.shoki.interop.Shoki.strictQueue;
 import static java.nio.file.Files.lines;
 import static java.nio.file.Path.of;
 import static java.util.Objects.requireNonNull;
@@ -83,7 +83,7 @@ public class DepthChangeCalculatorTest {
 
     @Test
     public void fullInput() throws URISyntaxException, IOException {
-        assertEquals(1446, calculate(process(readInputs())));
+        assertEquals(1446, calculate(process(readIntegerInputs("one.input"))));
     }
 
     @Test
@@ -110,12 +110,6 @@ public class DepthChangeCalculatorTest {
 
     @Test
     public void partTwoFullInput() throws URISyntaxException, IOException {
-        assertEquals(1486, calculate(processSlidingWindow(partitionInputs(readInputs()))));
-    }
-
-    private StrictQueue<Integer> readInputs() throws URISyntaxException, IOException {
-        return strictQueue(lines(of(requireNonNull(getClass().getClassLoader().getResource("one.input")).toURI()))
-                .map(Integer::parseInt)
-                .toList());
+        assertEquals(1486, calculate(processSlidingWindow(partitionInputs(readIntegerInputs("one.input")))));
     }
 }
