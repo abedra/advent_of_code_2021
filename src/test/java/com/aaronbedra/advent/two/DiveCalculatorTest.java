@@ -1,5 +1,6 @@
 package com.aaronbedra.advent.two;
 
+import com.aaronbedra.advent.two.Types.Aim;
 import com.aaronbedra.advent.two.Types.Horizontal;
 import com.aaronbedra.advent.two.Types.Vertical;
 import com.jnape.palatable.lambda.adt.Either;
@@ -9,7 +10,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import static com.aaronbedra.advent.testsupport.ReadTestInput.readIntegerInputs;
 import static com.aaronbedra.advent.testsupport.ReadTestInput.readStringInputs;
 import static com.aaronbedra.advent.two.Direction.*;
 import static com.aaronbedra.advent.two.DiveCalculator.*;
@@ -81,5 +81,20 @@ public class DiveCalculatorTest {
     @Test
     public void fullInput() throws URISyntaxException, IOException {
         assertEquals(1660158, calculate(positionAndDepth(parseInputs(readStringInputs("two.input")))));
+    }
+
+    @Test
+    public void sampleInputPositionCalculationDayTwo() {
+        assertEquals(tuple(new Horizontal(15), new Vertical(60), new Aim(10)), positionAndDepthPart2(SAMPLE_OUTPUTS));
+    }
+
+    @Test
+    public void sampleInputFinalCalculationPart2() {
+        assertEquals(900, calculatePart2(tuple(new Horizontal(15), new Vertical(60), new Aim(10))));
+    }
+
+    @Test
+    public void fullInputPart2() throws URISyntaxException, IOException {
+        assertEquals(1604592846, calculatePart2(positionAndDepthPart2(parseInputs(readStringInputs("two.input")))));
     }
 }
